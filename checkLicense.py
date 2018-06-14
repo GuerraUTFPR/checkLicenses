@@ -8,34 +8,68 @@ from progressbar import ProgressBar
 
 
 def getLastRepository(file):
-	result = open('NewOutput.txt', 'w')
-	pbar = ProgressBar()
 	
-	aux = ""
 	for line in file:
 		
 		package = line.split(',')
 		packageName = package[0].strip()
 		repositoryLink = package[1].strip()
 		qtdLicenses = package[2].strip()
-
+		aux = ''
 
 		if repositoryLink != aux and repositoryLink != "None":
 			#result.write(line)
 			#result.write(repostoryLink)
-			cloneRepository(repositoryLink, qtdLicenses)
+			
+			cloneRepository2(repositoryLink)
 			aux = repositoryLink
 
 	result.close()
 
 
+def cloneRepository2(urlRepository):
+	notFoundRepo = []
 
+	newUrlRepository = re.sub('.*://', 'https://Anomalo:123mudar@', urlRepository)
+	newUrlRepository = urlRepository.replace('git+ssh://git@github', 'https://Anomalo:123mudar@')
+	#newUrlRepository = urlRepository.replace('https://', 'https://Anomalo:123mudar@')
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print newUrlRepository
+	print "-------------"
+	
+	print '\n'
+	#print "======================================================================"
+	#print urlRepository
+	#print "======================================================================"
+	try:
+		subprocess.check_output("cd repoFolder; git clone " + newUrlRepository, shell=True)
+
+	except Exception as e:
+		pass
+		
 
 
 def cloneRepository(urlRepository, licenseCount):
 	notFoundRepo = []
 
 	newUrlRepository = re.sub('.*://', 'https://Anomalo:123mudar@', urlRepository)
+	newUrlRepository = re.sub('git+ssh://git@github', 'https://Anomalo:123mudar@', urlRepository)
+	
 	print '\n'
 	print "======================================================================"
 	print urlRepository
@@ -44,14 +78,21 @@ def cloneRepository(urlRepository, licenseCount):
 		subprocess.check_output("git clone " + newUrlRepository + " repoFolder" , shell=True)
 		licenses = foundLicense()
 		pass
+
 	except Exception as e:
+		if os.path.isdir("repoFolder"):
+			shutil.rmtree('repoFolder', ignore_errors=False, onerror=None)
+		
 		notFoundRepo.append(urlRepository)
+		
 		return
 
 	if str(licenses) != str(licenseCount):
 		print "Inconsistencia > {} != {}".format(licenses, licenseCount)
 	else:
 		print "OK!"
+
+
 	# Deleta o repositorio
 	shutil.rmtree('repoFolder', ignore_errors=False, onerror=None)
 
@@ -94,10 +135,10 @@ if __name__ == '__main__':
 	except Exception as e:
 		print "Erro para abrir o arquivo.\n" + e
 
-	try:
-		shutil.rmtree('repoFolder', ignore_errors=False, onerror=None)
-	except Exception as err:
-		pass
+#	try:
+#		shutil.rmtree('repoFolder', ignore_errors=False, onerror=None)
+#	except Exception as err:
+#		pass
 
 	getLastRepository(file)
 	
